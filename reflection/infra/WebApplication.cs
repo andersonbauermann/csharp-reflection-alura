@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using System.Text;
+using System.Reflection;
 
 namespace reflection.infra
 {
@@ -15,6 +15,12 @@ namespace reflection.infra
         }
         public void Open()
         {
+            while (true)
+                ProcessRequest();
+        }
+
+        private void ProcessRequest()
+        {
             var httpListener = new HttpListener();
 
             foreach (var prefix in _prefixes)
@@ -28,16 +34,38 @@ namespace reflection.infra
             var request = context.Request;
             var response = context.Response;
 
-            var contentResponse = "Hello World!";
-            var contentResponseBytes = Encoding.UTF8.GetBytes(contentResponse);
+            var path = request.Url.AbsolutePath;
 
-            response.ContentType = "text/html; charset=utf-8";
-            response.StatusCode = 200;
-            response.ContentLength64 = contentResponseBytes.Length;
+            if (path == "/Assets/css/styles.css")
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                string nameResourcer = "reflection.Assets.css.styles.css";
+                var resourceStream = assembly.GetManifestResourceStream(nameResourcer);
+                var bytesResource = new byte[resourceStream.Length];
 
-            response.OutputStream.Write(contentResponseBytes, 0, contentResponseBytes.Length);
+                resourceStream.Read(bytesResource, 0, (int)resourceStream.Length);
 
-            response.OutputStream.Close();
+                response.ContentType = "text/css; charset=utf-8";
+                response.StatusCode = 200;
+                response.ContentLength64 = resourceStream.Length;
+                response.OutputStream.Write(bytesResource, 0, bytesResource.Length);
+                response.OutputStream.Close();
+            }
+            else if (path == "/Assets/js/main.js")
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                string nameResourcer = "reflection.Assets.js.main.js";
+                var resourceStream = assembly.GetManifestResourceStream(nameResourcer);
+                var bytesResource = new byte[resourceStream.Length];
+
+                resourceStream.Read(bytesResource, 0, (int)resourceStream.Length);
+
+                response.ContentType = "application/js; charset=utf-8";
+                response.StatusCode = 200;
+                response.ContentLength64 = resourceStream.Length;
+                response.OutputStream.Write(bytesResource, 0, bytesResource.Length);
+                response.OutputStream.Close();
+            }
 
             httpListener.Stop();
         }
