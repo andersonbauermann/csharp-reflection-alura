@@ -27,4 +27,8 @@
     <EmbeddedResource Include="View\Home\Index.html" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Reflection.Service\Reflection.Service.csproj" />
+  </ItemGroup>
+
 </Project>
