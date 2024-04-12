@@ -1,7 +1,17 @@
-﻿namespace reflection.infra
+﻿using System;
+
+namespace reflection.infra
 {
     public static class Utils
     {
+        public static bool ItIsFile(string path)
+        {
+            var partsPath = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var lastPart = partsPath.Last();
+
+            return lastPart.Contains(".");
+        }
+
         public static string ConvertPathToAssemblyName(string path)
         {
             string prefixAssembly = "reflection";
