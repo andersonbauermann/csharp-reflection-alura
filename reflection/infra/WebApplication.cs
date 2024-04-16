@@ -43,33 +43,10 @@ namespace reflection.infra
                 var manipulate = new ProcessRequestFile();
                 manipulate.Manipulate(response, path);
             } 
-            else if (path == "/Cambio/MXN")
+            else
             {
-                var controller = new CambioController();
-                var pageContent = controller.MXN();
-
-                var bufferFile = Encoding.UTF8.GetBytes(pageContent);
-
-                response.StatusCode = 200;
-                response.ContentType = "text/html; charset=utf-8";
-                response.ContentLength64 = bufferFile.Length;
-
-                response.OutputStream.Write(bufferFile, 0, bufferFile.Length);
-                response.OutputStream.Close();
-            }
-            else if (path == "/Cambio/USD")
-            {
-                var controller = new CambioController();
-                var pageContent = controller.USD();
-
-                var bufferFile = Encoding.UTF8.GetBytes(pageContent);
-
-                response.StatusCode = 200;
-                response.ContentType = "text/html; charset=utf-8";
-                response.ContentLength64 = bufferFile.Length;
-
-                response.OutputStream.Write(bufferFile, 0, bufferFile.Length);
-                response.OutputStream.Close();
+                var manipulator = new ProcessRequestController();
+                manipulator.Manipulate(response, path);
             }
 
             httpListener.Stop();
