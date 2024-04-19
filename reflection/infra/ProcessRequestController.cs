@@ -1,10 +1,13 @@
-﻿using System.Net;
+﻿using reflection.infra.Binding;
+using System.Net;
 using System.Text;
 
 namespace reflection.infra
 {
     public class ProcessRequestController
     {
+        private readonly ActionBinder _actionBinder = new();
+
         public void Manipulate(HttpListenerResponse response, string path)
         {
             var parts = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
@@ -15,7 +18,8 @@ namespace reflection.infra
             var controllerWrapper = Activator.CreateInstance("reflection", controllerFullName, new object[0]);
             var controller = controllerWrapper.Unwrap();
 
-            var methodInfo = controller.GetType().GetMethod(actionName);
+            //var methodInfo = controller.GetType().GetMethod(actionName);
+            var methodInfo = _actionBinder.GetMethodInfo(controller, path);
 
             var resultAction = (string)methodInfo.Invoke(controller, new object[0]);
 

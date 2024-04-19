@@ -40,8 +40,6 @@ namespace reflection.Controller
                                 .Replace("VALOR_MOEDA_DESTINO", originCurrency)
                                 .Replace("MOEDA_DESTINO", destinationCurrency);
 
-
-            //VALOR_MOEDA_ORIGEM MOEDA_ORIGEM = VALOR_MOEDA_DESTINO MOEDA_DESTINO
             return textResult;
       }
     }
