@@ -19,9 +19,9 @@ namespace reflection.infra
             var controller = controllerWrapper.Unwrap();
 
             //var methodInfo = controller.GetType().GetMethod(actionName);
-            var methodInfo = _actionBinder.GetMethodInfo(controller, path);
+            var methodInfo = _actionBinder.GetActionBindInfo(controller, path);
 
-            var resultAction = (string)methodInfo.Invoke(controller, new object[0]);
+            var resultAction = (string)methodInfo.Invoke(controller);
 
             var buffer = Encoding.UTF8.GetBytes(resultAction);
             response.StatusCode = 200;

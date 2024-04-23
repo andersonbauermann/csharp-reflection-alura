@@ -1,7 +1,4 @@
-﻿using reflection.Controller;
-using System.Net;
-using System.Reflection;
-using System.Text;
+﻿using System.Net;
 
 namespace reflection.infra
 {
@@ -36,7 +33,7 @@ namespace reflection.infra
             var request = context.Request;
             var response = context.Response;
 
-            var path = request.Url.AbsolutePath;
+            var path = request.Url.PathAndQuery;
 
             if (Utils.ItIsFile(path))
             {
